@@ -1,63 +1,286 @@
 # Project Ideas
-*FLARE @ Google Summer of Code 2024*
+*FLARE @ Google Summer of Code 2025*
 
-This document lists examples of projects that would be great for GSoC 2024 contributors. The list doesn't include everything - feel free to identify your own idea and propose it!
+This document lists examples of projects that would be great for GSoC 2025 contributors.
+The list doesn't include everything - feel free to identify your own idea and propose it!
 
-All of our project ideas revolve around reverse engineering tools. That is, we want to improve the lives of malware analysts through novel techniques and automation. To succeed with any of these examples, you should have a basic familiarity with reverse engineering or a strong desire to learn.
+All of our project ideas revolve around reverse engineering tools.
+That is, we want to improve the lives of malware analysts through novel techniques and automation.
+To succeed with any of these examples, you should have a basic familiarity with reverse engineering or a strong desire to learn.
 
-Briefly, [capa](https://github.com/mandiant/capa) identifies the capabilities in executable files, such as "installs a service" or "downloads data via HTTP". [FLOSS](https://github.com/mandiant/flare-floss) automatically deobfuscated protected strings in malware. Each of these tools is used by thousands of analysts to identify, describe, and stop malware.
+Briefly:
+- [capa](https://github.com/mandiant/capa) identifies the capabilities in executable files, such as "installs a service" or "downloads data via HTTP".
+  - [add Binary Ninja Explorer plugin](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#capa-add-binary-ninja-explorer-plugin)
+  - [add Ghidra Explorer plugin](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#capa-add-ghidra-explorer-plugin)
+  - [Frida dynamic analysis for Android](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#capa-add-frida-dynamic-analysis-for-android)
+  - [migrate to PyGhidra](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#capa-migrate-to-pyghidra)
+  - [add ARM support to IDA Pro, Ghidra, and/or Binary Ninja backends](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#capa-add-arm-support-to-ida-pro-ghidra-andor-binary-ninja-backends)
+- [FLOSS](https://github.com/mandiant/flare-floss) automatically deobfuscated protected strings in malware.
+  - [extract language specific strings (.NET, Swift, Zig, ...)](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#floss-extract-language-specific-strings-net-swift-zig-)
+  - [QUANTUMSTRAND](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#floss-quantumstrand)
+- [BinDiff](https://github.com/google/bindiff) is an open-source comparison tool for binary files that assists vulnerability researchers and engineers to quickly find differences and similarities in disassembled code.
+  - [rearchitect Binary Diff Server and port to PyQt](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#bindiff-rearchitect-binary-diff-server-and-port-to-pyqt)
+- [XRefer](https://github.com/mandiant/xrefer) is a plugin for IDA Pro that provides a custom navigation interface to examine execution paths from entry points, break down the binary into clusters of related functions, and highlight downstream behaviors.
+- [GoReSym](https://github.com/mandiant/GoReSym) is a Go symbol parser that extracts program metadata (such as CPU architecture, OS, endianness, compiler version, etc), function metadata, filename and line number metadata, and embedded structures and types.
 
-## capa: improve usability and performance
+These tools are used by thousands of analysts to identify, describe, and stop malware.
 
-Improve capa's usability and performance
 
-| Difficulty | Size | Potential Mentors | Link |
-| ---- | ----- | ------ | ----- |
-| Hard | Large (estimated 350 hours) | Blas, Moritz, Mike, Willi | [https://github.com/mandiant/capa/discussions/1973](https://github.com/mandiant/capa/discussions/1973) |
+## capa: add Binary Ninja Explorer plugin
 
-capa is the FLARE team's open-source tool to identify program capabilities in executables and sandbox traces. capa can provide overwhelming and confusing output, especially for new users. This project aims to improve capa's usability by improving the command line interface (CLI) and by potentially developing a web-based user-interface (e.g. based on PyQt).
+_size_: medium, estimated 175 hours
 
-In a second step, capa's performance should be improved by analyzing failures across large datasets, optimizing the code, and reducing the number of code dependencies.
+_difficulty_: medium
 
-### Deliverables
+_mentors_: [@williballenthin](https://github.com/williballenthin)
+
+_link_: [https://github.com/mandiant/capa/issues/169](https://github.com/mandiant/capa/issues/169)
+
+capa is the FLARE team's open-source tool to identify program capabilities using an extensible rule set.
+
+Binary Ninja (Binja) is a modern disassembler and reverse engineering
+
+tool with a robust Python API that facilitates plugin development. A capa Explorer plugin for Binary Ninja would significantly enhance the workflow of reverse engineers who use Binja, allowing them to seamlessly identify and analyze program capabilities within their preferred environment. This project would not only benefit Binja users but also expand the reach and adoption of capa within the reverse engineering community.
+
+The core functionality of the plugin would be to:
+
+1. **Use capa's existing Binary Ninja backend to find capabilities in the currently open binary**.
+1. **Display the capa results in a user-friendly manner within Binary Ninja**. This includes displaying matching rules, the locations of matched features, and potentially the associated source code (if debug information is available).
+1. **Allow users to navigate from the capa results to the corresponding locations in the disassembly view**. This is crucial for efficient analysis, enabling users to quickly jump to the code responsible for a detected capability.
+
+**Deliverables**:
+
+- **Results Display**:
+  - Implement a custom dock widget (view) in Binary Ninja to display the capa results.
+  - Display a hierarchical tree view of matching rules, grouped by namespace (e.g., "anti-analysis", "communication").
+  - Show the rule name, description (short summary), and match status.
+  - Display the locations (addresses) of matched features within each rule.
+  - Implement filtering and searching capabilities within the results view. Allow users to filter rules by namespace, ATT&CK technique, or keyword.
+  - Highlight matched features directly in the disassembly view using Binary Ninja's highlighting API.
+- **Navigation**:
+  - Enable double-clicking on a rule or feature location in the results view to navigate to the corresponding address in the Binary Ninja disassembly view. Highlight the relevant instruction(s).
+  - Add tags/bookmarks for the matches.
+- **Rule Selection**:
+  - Basic UI for user to select a file path that contains the rulesets they'd like to use.
+- **Testing and Documentation**:
+  - Write basic unit tests for the plugin's core functionality.
+  - Create user documentation explaining how to install and use the plugin.
+- **Blog Post**:
+  - Document the development process and findings in a blog post suitable for publication on the Mandiant blog or a similar platform.
+
+**Required Skills**:
+
+- Solid knowledge of Python 3.
+- Experience with Binary Ninja's API (or strong willingness to learn).
+- Basic understanding of reverse engineering concepts (disassembly, assembly language, executable file formats).
+- Experience with Git and GitHub.
+
+**Potential Challenges and Mitigation Strategies**:
+
+- **Binary Ninja API Learning Curve**: Binary Ninja's API is extensive, but well-documented. The contributor should allocate time for learning the API and exploring existing plugins. The mentors can provide guidance and point to relevant examples.
+- **Performance Optimization**: Running capa on large binaries can be time-consuming. The plugin should be designed to handle large analysis results efficiently and provide progress feedback to the user. Asynchronous execution and caching strategies can be employed.
+- **UI Design**: Provide the user an intuitive way to interact with the plugin.
+
+## capa: add Ghidra Explorer plugin
+
+_size_: medium, estimated 175 hours
+
+_difficulty_: medium
+
+_mentors_: [@mike-hunhoff](https://github.com/mike-hunhoff)
+
+_link_: [https://github.com/mandiant/capa/issues/1980](https://github.com/mandiant/capa/issues/1980)
+
+capa is the FLARE team's open-source tool to identify program capabilities using an extensible rule set. Currently, analysts often invoke capa as a command-line tool or via the capa Explorer plugin for IDA Pro. This project aims to bring the interactive rule exploration experience of capa Explorer to Ghidra, a powerful and extensible reverse engineering platform developed by the NSA.
+
+Ghidra is a free and open-source software reverse engineering (SRE) framework. It includes a suite of tools for analyzing compiled code on a variety of platforms. Ghidra's extensibility is a key feature, and recently, the PyGhidra project has provided Python bindings for the Ghidra API, enabling plugin development in Python. A capa Explorer plugin for Ghidra would greatly enhance the workflow of reverse engineers who rely on Ghidra, allowing them to seamlessly integrate capa's capability detection into their analysis process. This project would benefit both Ghidra users and expand the user base of capa.
+
+The core functionality of the plugin would be to:
+
+1. **Use capa's existing Ghidra backend to find capabilities in the currently open binary**.
+1. **Display the capa results in a user-friendly manner within Ghidra**. This includes showing matching rules, the locations of matched features (addresses, function names, etc.), and potentially linking to the relevant decompiler output.
+1. **Allow users to navigate from the capa results to the corresponding locations in the Ghidra disassembly listing and decompiler views**. This is critical for efficient analysis, enabling users to quickly jump to the code associated with a detected capability.
+
+**Deliverables**:
+
+- **Results Display**:
+  - Implement a custom Ghidra Tool window or panel to display the capa results.
+  - Display a hierarchical tree view of matching rules, grouped by namespace (e.g., "anti-analysis", "communication").
+  - Show the rule name, description, and match status.
+  - Display the locations of matched features within each rule.
+  - Implement filtering and searching capabilities within the results view. Allow users to filter rules by namespace, ATT&CK technique, or keyword.
+  - Highlight matched features directly in the Ghidra listing view using Ghidra's highlighting API.
+- **Navigation**:
+  - Enable double-clicking on a rule or feature location in the results view to navigate to the corresponding address in the Ghidra disassembly listing view.
+  - Highlight the relevant instructions.
+- **Rule Selection**:
+  - Provide a basic UI for the user to select the file path containing the desired rulesets.
+- **Testing and Documentation**:
+  - Write basic unit tests for the plugin's core functionality.
+  - Create user documentation explaining how to install and use the plugin.
+- **Blog Post**:
+  - Document the development process, challenges and finding in a blog post.
+
+**Required Skills**:
+
+- Solid knowledge of Python 3.
+- Experience with Ghidra and PyGhidra (or strong willingness to learn). Familiarity with Java is a plus, but not strictly required due to PyGhidra.
+- Basic understanding of reverse engineering concepts (disassembly, assembly language, executable file formats).
+- Experience with Git and GitHub.
+
+**Potential Challenges and Mitigation Strategies**:
+
+- **PyGhidra Learning Curve**: While PyGhidra simplifies Ghidra plugin development, the student will still need to learn the PyGhidra API and how it interacts with Ghidra's underlying Java API. The mentors can provide guidance and point to relevant examples.
+- **Performance Optimization**: Running capa on large binaries can be time-consuming. The plugin should handle large results efficiently and provide feedback to the user. Asynchronous execution and caching can help.
+- **UI Design**: Design the user interface to be intuitive within the Ghidra environment.
+
+## capa: add Frida dynamic analysis for Android
+
+_size_: large, estimated 350 hours
+
+_difficulty_: hard
+
+_mentors_: [@larchchen](https://github.com/larchchen)
+
+capa is the FLARE team's open-source tool to identify program capabilities using an extensible rule set.
+
+[Frida](https://github.com/frida/frida) is a popular dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers, allowing custom scripts injected into black box processes thus monitoring program behaviors. Frida is a particularly preferred option to analyze Android Apps by launching Apps in Android Emulator and intercepting certain function calls.
+
+In addition to the capa's dependencies on CAPE sandbox during dynamic capabilities detection, Frida is a more friendly alternative for mobile App analysis. With the possibilities of using existing Frida scripts and/or developing new Frida scripts, extending capa's dynamic detection upon logs generated from Frida logs would be a good start. Integrating capa rule matching engine with Frida scripts could be another bonus approach. The goal of this project is to support capa rule matching capabilities in Android via Frida instrumentation framework.
+
+**Deliverables**
 
 - Research
-  - Review current capa output modes
-  - Review common capa performance issues: failures, slowness, and false positives
-- Identify and Propose Improvements
-  - Suggest improvements for the user interface and experience
-  - Summarize identified major performance culprits
+  - Review capa's existing support of dynamic capabilities detection
+  - Review Frida's instrumentation framework
+- Identify Additions, Changes, and Improvements
+  - Suggest technical roadmaps to support Frida-capa detection
   - Discuss ideas with mentors and capa user community
 - Implementation
-  - Implement improved output modes for the command line interface (CLI)
-  - Prevent program failures, speed up execution times, reduce code dependencies
-  - [stretch goal]: Work on a web-based UI to interactively display capa results
+  - Implement ideas aligned with finalized roadmaps
 - Evaluation and Knowledge Sharing
-  - Test improvements and gather feedback from users
+  - Test deliverables and gather feedback from users
   - Write blog post about experience and project achievements
 
-### Required Skills
+**Required Skills**
 
 - Solid knowledge of Python 3
+- Solid knowledge of one of JavaScript/C/Go
 - Basic understanding of reverse engineering / malware analysis
 - Basic understanding of Git
-- Experience or interest in user interface and/or user experience design
+- Basic understanding of Android App analysis using Android Emulator
+- Basic understanding of Frida
+
+## capa: migrate to PyGhidra
+
+_size_: small, estimated 90 hours
+
+_difficulty_: low
+
+_mentors_: [@mike-hunhoff](https://github.com/mike-hunhoff)
+
+_link_: https://github.com/mandiant/capa/issues/2600
+
+This project aims to modernize the existing capa Ghidra backend by migrating it from the third-party Ghidrathon Python bindings to the officially supported PyGhidra bindings, [released with Ghidra 11.3](https://github.com/NationalSecurityAgency/ghidra/blob/Ghidra_11.3_build/Ghidra/Configurations/Public_Release/src/global/docs/WhatsNew.md#pyghidra ). Since PyGhidra is distributed with Ghidra, we expect this to have better long term support and be easier for users to access. This migration will ensure the long-term maintainability and compatibility of the capa plugin with future Ghidra releases.
+
+**Deliverables**:
+
+- **Port Existing Functionality**: Migrate the existing capa Ghidra backend's code to use the PyGhidra API. This primarily involves updating API calls and adapting to any differences in how PyGhidra interacts with Ghidra.
+- **Testing**: Thoroughly test the migrated plugin to ensure that all existing features function correctly with PyGhidra.
+- **Documentation Updates**: Update the plugin's documentation to reflect the change to PyGhidra and provide installation instructions for users.
+
+**Required Skills**:
+
+- Basic Python programming skills.
+- Familiarity with Ghidra and its scripting capabilities, or willingness to learn.
+- Experience with Git and GitHub.
+- Understanding of capa is a plus, but not required for this project.
+
+
+## capa: add ARM support to IDA Pro, Ghidra, and/or Binary Ninja backends
+
+_size_: small to large
+
+_difficulty_: medium
+
+_mentors_: [@mr-tz](https://github.com/mr-tz)
+
+_link_: https://github.com/mandiant/capa/issues/1774
+
+This project aims to extend capa's support for analyzing programs targeting the ARM architecture across its major analysis backends: IDA Pro, Ghidra, and Binary Ninja. While capa's core analysis engine (via the BinExport2 backend) already supports ARM, the backends for these popular disassemblers currently lack direct feature extraction for this architecture. This project will bridge that gap, enabling users to analyze ARM binaries seamlessly within their preferred reverse engineering environments.
+
+The core task involves extending the existing backends to extract relevant features (instructions, API calls, constants, etc.) from ARM binaries loaded in IDA Pro, Ghidra, and Binary Ninja. This will leverage the respective disassembler APIs to access the disassembled code and program information. The extracted features will then be formatted and passed to capa's core analysis engine.
+
+**Deliverables**:
+
+- **update capa IDA Pro backend (optional, pick 1-3)**
+- **update capa Ghidra backend (optional, pick 1-3)**
+- **update capa Binary Ninja backend (optional, pick 1-3)**
+- **Testing**: Develop test cases (ARM binaries with known capabilities) and verify that capa correctly identifies capabilities in these binaries through each of the extended plugins.
+- **Documentation**: Update the documentation for each plugin to reflect the added ARM support.
+
+**Required Skills**:
+
+- Solid Python programming skills.
+- Familiarity with at least one of: IDA Pro, Ghidra, or Binary Ninja, and their respective plugin APIs (or willingness to learn quickly).
+- Basic understanding of the ARM architecture and assembly language.
+- Experience with Git and GitHub.
+
+
+## FLOSS: extract language specific strings (.NET, Swift, Zig, ...)
+
+_size_: large, estimated 350 hours
+
+_difficulty_: medium
+
+_mentors_: [@mr-tz](https://github.com/mr-tz)
+
+_link_: [https://github.com/mandiant/flare-floss/issues/718](https://github.com/mandiant/flare-floss/issues/718)
+
+Various programming languages embed the constant data, like strings, used within executables in different ways. Most tools, like strings.exe, just look for printable character sequences. This doesn't work well for files compiled from Go or Rust.
+
+Here we propose to extendFLOSS to include a framework to extract language specific strings from executables. After identifying the language, a specific extractor can use specialized logic to pull out the strings embedded into a program by the author. When possible, the extractor should indicate library and runtime-related strings. For example, the extractor may parse debug information to recognize popular third party libraries and annotate the related strings appropriately.
+
+Today, FLOSS automatically deobfuscates protected strings found in malware. Better categorization of its output would make its users more efficient. Extracting language-specific strings would make FLOSS more useful and manifest success as the default tool used by security analysts.
+
+**Deliverables**
+
+- Develop language identification module
+  - Initial focus on .NET
+  - Consider also Swift, Zig, …
+- Research language string embeddings and create extractor code
+  - We can share existing knowledge and code to bootstrap this
+- Identify strings related to runtime and library code for targeted programming languages
+- Extend standard output format and render results
+
+**Required Skills**
+
+- Medium knowledge of Python 3
+- Basic understanding of reverse engineering (focus: Windows PE files)
+- Experience with .NET or Swift (internals) is a plus, but not required
+- Interest in malware analysis with focus on static analysis
+- Basic understanding of Git
+
 
 ## FLOSS: QUANTUMSTRAND
 
+_size_: large, estimated 350 hours
+
+_difficulty_: medium
+
+_mentors_: [@williballenthin](https://github.com/williballenthin)
+
+_link_: [https://github.com/mandiant/flare-floss/issues/943](https://github.com/mandiant/flare-floss/issues/943)
+
 Extend FLOSS to use the rendering techniques pioneered by QUANTUMSTRAND.
 
-| Difficulty | Size | Potential Mentors | Link |
-| ---- | ----- | ------ | ----- |
-| Medium | Large (estimated 350 hours) | Moritz, Mike, Richard, Willi | [https://github.com/mandiant/flare-floss/issues/943](https://github.com/mandiant/flare-floss/issues/943) |
+QUANTUMSTRAND is an experiment that augments traditional strings.exe output with context to aid in malware analysis and reverse engineering. For example, we show the structure of a file alongside its strings and mute/highlight entries based on their global prevalence, library association, expert rules, and more.
 
-[QUANTUMSTRAND](https://github.com/mandiant/flare-floss/tree/quantumstrand/floss/qs) is an experiment that augments traditional strings.exe output with context to aid in malware analysis and reverse engineering. For example, we show the structure of a file alongside its strings and mute/highlight entries based on their global prevalence, library association, expert rules, and more.
-
-[FLOSS](https://github.com/mandiant/flare-floss) is a tool that automatically extracts obfuscated strings from malware, rendering the human-readable data in a way that enables rapid reverse engineering.
+FLOSS is a tool that automatically extracts obfuscated strings from malware, rendering the human-readable data in a way that enables rapid reverse engineering.
 
 We propose to extend FLOSS to use the techniques pioneered by QUANTUMSTRAND to highlight important information while muting common and/or analytically irrelevant noise. The project will provide an opportunity to dig into the PE, ELF, and/or Mach-O file formats, finding ways to make technical details digestible. If successful, FLOSS will continue to be the tool that malware analysts turn to when triaging unknown files.
 
-### Deliverables
+**Deliverables**
 
 Brand new output format released as part of FLOSS v4 in late 2024.
 
@@ -74,7 +297,7 @@ Brand new output format released as part of FLOSS v4 in late 2024.
   - Test improvements and gather feedback from users
   - Write blog post about experience and project achievements
 
-### Required Skills
+**Required Skills**
 
 - Solid knowledge of Python 3
 - Basic understanding of reverse engineering / malware analysis
@@ -82,98 +305,59 @@ Brand new output format released as part of FLOSS v4 in late 2024.
 - Experience or interest with file formats such as PE, ELF, and/or Mach-O
 - Experience or interest in user interface and/or user experience design
 
-## dncil: CIL Emulation
 
-Extend dncil to support a CIL instruction emulator.
+## BinDiff: rearchitect Binary Diff Server and port to PyQt
 
-| Difficulty | Size | Potential Mentors | Link |
-| ---- | ----- | ------ | ----- |
-| Hard | Large (estimated 350 hours) | Mike, Willi | https://github.com/mandiant/dncil |
+_size_: large, estimated 350 hours
 
-dncil is a Common Intermediate Language (CIL) disassembly library written in Python that supports parsing the header, instructions, and exception handlers of .NET managed methods. Parsed data is exposed through an object-oriented API to help you quickly develop CIL analysis tools using dncil. The goal of this project is to extend dncil to support a basic CIL instruction emulator. This would enable users of the library to evaluate the effects of a sequence of CIL instructions, such as a pure C# method body, and programmatically inspect the virtual CPU state. We imagine that this could be used to build a version of FLOSS that automatically deobfuscates strings in .NET program.
+_difficulty_: hard
 
-### Deliverables
+_mentors_: [@cblichmann](https://github.com/cblichmann)
 
-- Research
-  - Understand the [Common Intermediate Language (CIL) instruction set](https://download.microsoft.com/download/7/3/3/733ad403-90b2-4064-a81e-01035a7fe13c/ms%20partition%20iii.pdf) (link to PDF), most importantly, the state of the evaluation stack before and after each CIL instruction is executed
-  - Understand dncil’s [opcode representation](https://github.com/mandiant/dncil/blob/main/dncil/cil/opcode.py) of each CIL instruction
-- Identify Additions, Changes, and Improvements
-  - Suggest additions, changes, and improvements needed to programmatically evaluate CIL instructions and examine virtual CPU state
-  - Discuss ideas with mentors and dncil user community
-- Implementation
-  - Implement finalized ideas
-- Evaluation and Knowledge Sharing
-  - Test deliverables and gather feedback from users
-  - Write blog post about experience and project achievements
+_link_: https://github.com/google/bindiff/issues/17
 
-### Required Skills
+This project aims to modernize BinDiff by re-architecting it as a cross-platform "diffing service" with a unified UI layer. The core idea is to separate the diffing engine from the user interface. A "diff server," implemented (likely in C++ or Rust for performance), will handle the core diffing logic. This server will load BinExport files and perform the diffing computations. It will communicate with client plugins via a protocol like gRPC.
 
-  - Solid knowledge of Python 3
-  - Basic understanding of instruction set emulation and/or moderate familiarity with one or more emulation frameworks such as [Unicorn](https://www.unicorn-engine.org/), [flare-emu](https://github.com/mandiant/flare-emu), [speakeasy](https://github.com/mandiant/speakeasy), etc.
-  - Basic understanding of reverse engineering / malware analysis
-  - Basic understanding of Git
-  - Experience or interest with CIL/.NET internals
+Client plugins will be developed for IDA Pro and Binary Ninja, using a shared Python codebase and PyQt for the UI. Each disassembler will have a small, platform-specific module to handle tasks like symbol porting. This architecture promotes code reuse and simplifies maintenance. Keeping the diff server running in the background allows for dynamic re-diffing as binaries are modified, and opens up possibilities for improved flow graph visualization by combining data from multiple functions.
 
-## capa: ARM support
+The project scope is intentionally flexible, allowing the student and mentors to collaboratively define the specific features and implementation details. The focus will be on establishing a solid foundation for the new architecture and demonstrating its feasibility.
 
-Add ARM architecture support to capa.
+**Deliverables (Flexible, to be refined during the project)**:
 
-| Difficulty | Size | Potential Mentors | Link |
-| ---- | ----- | ------ | ----- |
-| Hard | Large (estimated 350 hours) | Moritz, Willi, Mike | [capa#1774](https://github.com/mandiant/capa/issues/1774 ) |
+- **Diff Server Prototype**:
+  - Design and implement a basic "diff server" that can load BinExport files and perform a simple diffing algorithm.
+  - Implement a communication protocol (e.g., gRPC) for interaction with client plugins.
+- **Shared UI Library (Python/PyQt)**:
+  - Develop a shared Python library using PyQt that provides the core UI components for displaying diffing results. This includes views for function lists, matched/unmatched functions, and potentially basic flow graph comparisons.
+- **IDA Pro and Binary Ninja Plugins**:
+  - Create basic plugins for IDA Pro and Binary Ninja that utilize the shared UI library and communicate with the diff server.
+  - Implement symbol porting.
+  - Demonstrate basic diffing functionality within each disassembler.
+- **Proof of Concept**:
+  - Demonstrate the ability to load two BinExport files, perform a diff, and display the results in both IDA Pro and Binary Ninja.
+- **Documentation**:
+  - Document the design, architecture, and API of the diff server and client plugins.
 
-capa is the FLARE team’s open-source tool to identify program capabilities using an extensible rule set. Each rule is matched against features that capa extracts from a program. Extracted features include file-level features such as strings, section names, imports, and exports and function-level features such as API calls, string and byte references, instruction mnemonics, and number constants. capa uses feature extractors, called "backends", to extract features from supported file types (PE, ELF, and .NET) and architectures (32- and 64-bit x86). Each backend is built around an existing tool or library that provides file parsing and disassembly capabilities. capa uses this to extract features. capa currently implements backends using Vivisect, IDA Pro, dnfile, and Ghidra. The goal of this project is to extend capa to process ARM binaries.
+**Required Skills**:
 
-### Deliverables
+- Solid knowledge of Python 3 and C++ and/or Rust.
+- Experience with or willingness to learn PyQt.
+- Experience with or willingness to learn gRPC.
+- Basic understanding of binary diffing concepts.
+- Familiarity with IDA Pro and Binary Ninja APIs (or strong willingness to learn).
+- Experience with Git and GitHub.
 
-- Research
-  - Review capa’s existing support for Intel architectures
-- Identify Additions, Changes, and Improvements
-  - Suggest additions, changes, improvements need to support ARM architecture analysis
-  - Discuss ideas with mentors and capa user community
-- Implementation
-  - Implement proposed ideas
-- Evaluation and Knowledge Sharing
-  - Test deliverables and gather feedback from users
-  - Write blog post about experience and project achievements
+**Potential Challenges**:
 
-### Required Skills
+- **Defining the Scope**: The open-ended nature of the project requires careful planning and communication between the student and mentors to define achievable goals.
+- **Inter-process Communication**: Choosing and implementing an efficient and reliable communication protocol between the diff server and client plugins will be crucial.
 
-  - Solid knowledge of Python 3
-  - Basic understanding of reverse engineering / malware analysis
-  - Basic understanding of Git
-  - Moderate knowledge of the ARM architecture
 
-## capa: Ghidra P-code Support 
+## XRefer: project in scope
 
-Add P-code support to capa’s existing Ghidra backend.
+_mentors_: [@m-umairx](https://github.com/m-umairx)
 
-| Difficulty | Size | Potential Mentors | Link |
-| ---- | ----- | ------ | ----- |
-| Hard | Large (estimated 350 hours) | Mike, Willi | https://github.com/mandiant/capa |
+## GoReSym: project in scope
 
-capa is the FLARE team’s open-source tool to identify program capabilities using an extensible rule set. Each rule is matched against features that capa extracts from a program. Extracted features include file-level features such as strings, section names, imports, and exports and function-level features such as API calls, string and byte references, instruction mnemonics, and number constants. capa uses feature extractors, called "backends", to extract features from supported file types (PE, ELF, and .NET) and architectures (32- and 64-bit x86). Each backend is built around an existing tool or library that provides file parsing and disassembly capabilities. capa uses this to extract features. capa currently implements backends using Vivisect, IDA Pro, dnfile, and Ghidra.
+_mentors_: [@stevemk14ebr](https://github.com/stevemk14ebr)
 
-Ghidra is a popular open-source disassembly framework with a robust API to access its analysis. Programs can interact with a wealth of information that includes parsed file formats and disassembled code. Ghidra supports P-code, a “register transfer language designed for reverse engineering applications. The language is general enough to model the behavior of many different processors. By modeling in this way, the analysis of different processors is put into a common framework, facilitating the development of retargetable analysis algorithms and applications.” The goal of this project is to adapt the existing Ghidra backend to process P-code thus enabling capa to process all of Ghidra’s supported architectures in an architecture-independent manner.
-
-### Deliverables
-
-- Research
-  - Review [capa's Ghidra integration](https://github.com/mandiant/capa/tree/master/capa/ghidra)
-  - Understand [Ghidra’s P-code support and related APIs](https://ghidra.re/ghidra_docs/api/ghidra/program/model/pcode/PcodeOp.html)
-- Identify Additions, Changes, and Improvements
-  - Suggest additions, changes, improvements to needed to support P-code analysis
-  - Discuss ideas with mentors and capa user community
-- Implementation
-  - Implement finalized ideas
-- Evaluation and Knowledge Sharing
-  - Test deliverables and gather feedback from users
-  - Write blog post about experience and project achievements
-
-### Required Skills
-
-  - Solid knowledge of Python 3
-  - Basic understanding of reverse engineering / malware analysis
-  - Basic understanding of Git
-  - Experience or interest with the Ghidra reverse engineering suite of tools
-  - Moderate knowledge of P-code and/or cross-architecture intermediate representations
