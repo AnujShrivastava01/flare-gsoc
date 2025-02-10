@@ -38,9 +38,7 @@ _link_: [https://github.com/mandiant/capa/issues/169](https://github.com/mandian
 
 capa is the FLARE team's open-source tool to identify program capabilities using an extensible rule set.
 
-Binary Ninja (Binja) is a modern disassembler and reverse engineering
-
-tool with a robust Python API that facilitates plugin development. A capa Explorer plugin for Binary Ninja would significantly enhance the workflow of reverse engineers who use Binja, allowing them to seamlessly identify and analyze program capabilities within their preferred environment. This project would not only benefit Binja users but also expand the reach and adoption of capa within the reverse engineering community.
+Binary Ninja (Binja) is a modern disassembler and reverse engineering tool with a robust Python API that facilitates plugin development. A capa Explorer plugin for Binary Ninja would significantly enhance the workflow of reverse engineers who use Binja, allowing them to seamlessly identify and analyze program capabilities within their preferred environment. This project would not only benefit Binja users but also expand the reach and adoption of capa within the reverse engineering community.
 
 The core functionality of the plugin would be to:
 
@@ -239,7 +237,7 @@ _link_: [https://github.com/mandiant/flare-floss/issues/718](https://github.com/
 
 Various programming languages embed the constant data, like strings, used within executables in different ways. Most tools, like strings.exe, just look for printable character sequences. This doesn't work well for files compiled from Go or Rust.
 
-Here we propose to extendFLOSS to include a framework to extract language specific strings from executables. After identifying the language, a specific extractor can use specialized logic to pull out the strings embedded into a program by the author. When possible, the extractor should indicate library and runtime-related strings. For example, the extractor may parse debug information to recognize popular third party libraries and annotate the related strings appropriately.
+Here we propose to extend FLOSS to include a framework to extract language specific strings from executables. After identifying the language, a specific extractor can use specialized logic to pull out the strings embedded into a program by the author. When possible, the extractor should indicate library and runtime-related strings. For example, the extractor may parse debug information to recognize popular third party libraries and annotate the related strings appropriately.
 
 Today, FLOSS automatically deobfuscates protected strings found in malware. Better categorization of its output would make its users more efficient. Extracting language-specific strings would make FLOSS more useful and manifest success as the default tool used by security analysts.
 
@@ -282,7 +280,7 @@ We propose to extend FLOSS to use the techniques pioneered by QUANTUMSTRAND to h
 
 **Deliverables**
 
-Brand new output format released as part of FLOSS v4 in late 2024.
+Brand new output format released as part of FLOSS v4 in late 2025.
 
 - Research
   - Review Quantumstrand functionality
