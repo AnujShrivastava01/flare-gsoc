@@ -21,6 +21,8 @@ Briefly:
 - [BinDiff](https://github.com/google/bindiff) is an open-source comparison tool for binary files that assists vulnerability researchers and engineers to quickly find differences and similarities in disassembled code.
   - [rearchitect Binary Diff Server and port to PyQt](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#bindiff-rearchitect-binary-diff-server-and-port-to-pyqt)
 - [XRefer](https://github.com/mandiant/xrefer) is a plugin for IDA Pro that provides a custom navigation interface to examine execution paths from entry points, break down the binary into clusters of related functions, and highlight downstream behaviors.
+  - [Build a Multi-Backend Abstraction Layer with Binary Ninja Support](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#xrefer-build-a-multi-backend-abstraction-layer-with-binary-ninja-support)
+  - [HTML Exporter and Visualizer for XRefer's Cluster Analysis](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#xrefer-html-exporter-and-visualizer-for-xrefers-cluster-analysis)
 - [GoReSym](https://github.com/mandiant/GoReSym) is a Go symbol parser that extracts program metadata (such as CPU architecture, OS, endianness, compiler version, etc), function metadata, filename and line number metadata, and embedded structures and types.
 
 These tools are used by thousands of analysts to identify, describe, and stop malware.
@@ -351,9 +353,68 @@ The project scope is intentionally flexible, allowing the student and mentors to
 - **Inter-process Communication**: Choosing and implementing an efficient and reliable communication protocol between the diff server and client plugins will be crucial.
 
 
-## XRefer: project in scope
+### XRefer: Build a Multi-Backend Abstraction Layer with Binary Ninja Support
 
 _mentors_: [@m-umairx](https://github.com/m-umairx)
+
+XRefer is tightly coupled with IDA Pro, making it challenging to adapt for use with other popular reverse-engineering platforms like Ghidra or Binary Ninja. This project aims to refactor XRefer's core **analyzer** component, creating a new backend abstraction layer that standardizes how different platforms interact with the plugin's logic. Additionally, the project aims to aid support for Binary Ninja by implementing a new PoC backend.
+
+_**Note**: This project focuses on creating and demonstrating an abstraction layer for XRefer's underlying analysis engine only. The user interface is not included in the project scope_.
+
+**Deliverables**:
+
+- **Code Review**
+  - Identify and document all places where IDA-specific APIs or data structures are used within the **analyzer** and **lang** components.
+  - Assess the feasibility and scope of decoupling those calls into a new abstraction layer.
+- **Design a Backend Interface**
+  - Specify the APIs needed for core tasks (e.g., disassembly, cross-references, function discovery, flow analysis) that different backends must implement.
+  - Draft an interface or set of classes that each supported platform (IDA, Ghidra, Binary Ninja, etc.) can plug into with minimal friction.
+- **Refactor XRefer**
+  - Migrate IDA-specific logic into a separate module or wrapper.
+  - Adapt XRefer's main codebase to use the newly created backend interface rather than direct IDA calls.
+- **Proof-of-Concept for Additional Backends**
+  - Implement a PoC backend using Binary Ninja's API.
+  - Demonstrate how XRefer can run independently of IDA using the newly defined backend interface to generate a .**xrefer** analysis file.
+  - Outline best practices for future contributors to add and maintain backends.
+
+**Required Skills**
+
+- Proficiency in Python programming language.
+- Experience with (or strong willingness to learn) IDA's Python API.
+- Experience with (or strong willingness to learn) Binary Ninja's API.
+- Basic understanding of reverse engineering and underlying concepts (disassembly, functions, cross-references) and executable file formats.
+- Basic knowledge of Git/Github.
+
+## XRefer: HTML Exporter and Visualizer for XRefer's Cluster Analysis
+
+_mentors_: [@m-umairx](https://github.com/m-umairx)
+
+The goal of this project is to design and implement an HTML export module for XRefer. The module will convert XRefer's internal cluster analysis data into a dynamic HTML visualization. This interactive output should allow users to:
+
+- **View Cluster Graphs**: Render detailed graphs illustrating the relationships between clusters.
+- **Read Semantic Descriptions**: Provide natural language explanations for each cluster and its contained functions.
+- **Interact with Data**: Offer interactive controls (e.g., zoom, pan, node selection, filtering) to explore and analyze clusters in depth.
+
+**Deliverables**:
+
+- **Design and Architecture**
+  - Develop an intuitive UI/UX design that outlines how clusters and their semantic descriptions will be presented. Consider interactive elements such as zoomable graphs, clickable nodes, and filtering options.
+  - Evaluate and choose suitable front-end libraries or frameworks (e.g., D3.js, Cytoscape.js) for rendering graphs and managing interactivity.
+- **Develop the HTML Export Module**
+  - Create a Python module to convert XRefer's cluster analysis data into a format consumable by the front-end (e.g., JSON).
+  - Develop a responsive HTML template that integrates the chosen visualization libraries. The template should include placeholders for cluster graphs, semantic descriptions, and interactive controls.
+  - Implement features such as zoom, pan, node highlighting, and tooltips to enhance the user's exploratory experience.
+  - Integrate the export module into the existing XRefer workflow so that a .html file is generated as part of the analysis process.
+- **Documentation**
+  - Document the design decisions, data transformation process, and integration steps to help future contributors extend or maintain the module.
+
+**Required Skills**
+
+- Proficiency in Python programming language.
+- Familiarity with HTML, CSS, and JavaScript for building interactive web interfaces.
+- Experience with visualization libraries (e.g., D3.js, Cytoscape.js) or willingness to learn how to implement interactive graphs.
+- Ability to conceptualize and design an intuitive user interface that effectively presents complex data.
+- Basic knowledge of Git/Github.
 
 ## GoReSym: project in scope
 
