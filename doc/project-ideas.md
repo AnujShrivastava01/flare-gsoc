@@ -20,7 +20,7 @@ Briefly:
   - [QUANTUMSTRAND](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#floss-quantumstrand)
 - [BinDiff](https://github.com/google/bindiff) is an open-source comparison tool for binary files that assists vulnerability researchers and engineers to quickly find differences and similarities in disassembled code.
   - [rearchitect Binary Diff Server and port to PyQt](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#bindiff-rearchitect-binary-diff-server-and-port-to-pyqt)
-- [XRefer](https://github.com/mandiant/xrefer) is a plugin for IDA Pro that provides a custom navigation interface to examine execution paths from entry points, break down the binary into clusters of related functions, and highlight downstream behaviors.
+- [XRefer](https://github.com/mandiant/xrefer) is an IDA plugin offering a custom navigation interface to examine execution paths, highlight downstream behaviors, cluster related functions, and generate Gemini-based insights into the malware's anatomy. 
   - [Build a Multi-Backend Abstraction Layer with Binary Ninja Support](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#xrefer-build-a-multi-backend-abstraction-layer-with-binary-ninja-support)
   - [HTML Exporter and Visualizer for XRefer's Cluster Analysis](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md#xrefer-html-exporter-and-visualizer-for-xrefers-cluster-analysis)
 - [GoReSym](https://github.com/mandiant/GoReSym) is a Go symbol parser that extracts program metadata (such as CPU architecture, OS, endianness, compiler version, etc), function metadata, filename and line number metadata, and embedded structures and types.
@@ -354,6 +354,9 @@ The project scope is intentionally flexible, allowing the student and mentors to
 
 
 ### XRefer: Build a Multi-Backend Abstraction Layer with Binary Ninja Support
+_size_: large, estimated 360 hours
+
+_difficulty_: medium
 
 _mentors_: [@m-umairx](https://github.com/m-umairx)
 
@@ -386,6 +389,9 @@ _**Note**: This project focuses on creating and demonstrating an abstraction lay
 - Basic knowledge of Git/Github.
 
 ## XRefer: HTML Exporter and Visualizer for XRefer's Cluster Analysis
+_size_: medium, estimated 160 hours
+
+_difficulty_: low
 
 _mentors_: [@m-umairx](https://github.com/m-umairx)
 
