@@ -12,7 +12,7 @@ All of our project ideas revolve around reverse engineering tools. That is, we w
   2. **Prepare a patch** related to the existing FLARE project to practice interacting with us on GitHub. **This should take you between one and four hours**. We have “good first issues” [tagged here](https://github.com/search?q=topic%3Agsoc-2025+org%3Amandiant+label%3A%22good+first+issue%22+state%3Aopen&type=Issues); you can claim and close one of these or find something else that interests you. You don't need to send more than one PR to fulfill this requirement - we just want to work out any kinks in our collaboration styles. We value bug fixes or improvements that show your familiarity with the code. Please do NOT submit a PR just to check off a box, i.e., a meaningless or trivial fix.
   3. **Write your application** using the below template. **This should take you between two and six hours**.
       - If you choose, we can provide one review of your application submitted to us via a shared Google document **at least 10 days prior to the application deadline**.
-  4. **Submit your application** to the Google system before the deadline on April 2 (18:00 UTC). All applications must go through Google's application system; we can't accept any application unless it is submitted there.
+  4. **Submit your application** to the Google system before the deadline on April 8 (18:00 UTC). All applications must go through Google's application system; we can't accept any application unless it is submitted there.
 
 
 # Application Template
