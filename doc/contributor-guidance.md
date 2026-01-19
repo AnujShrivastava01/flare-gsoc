@@ -1,18 +1,33 @@
 # Contributor Guidance
-*FLARE @ Google Summer of Code 2025*
+*FLARE @ Google Summer of Code 2026*
 
-This document explains what we expect from applicants to Mandiant FLARE projects in GSoC 2025. While we've provided links and an application template, we probably haven't anticipated every question. So, reach out and talk with us!
+This document explains what we expect from applicants to Mandiant FLARE projects in GSoC 2026. While we've provided links and an application template, we probably haven't anticipated every question. So, reach out and talk with us!
 
 All of our project ideas revolve around reverse engineering tools. That is, we want to improve the lives of malware analysts through novel techniques and automation. To succeed in this domain, you should have a basic familiarity with reverse engineering or a strong desire to learn.
 
+Our tools are used by thousands of analysts to identify, describe, and stop malware.
+
 
 ## Application Steps
-  0. **Read** the GSoC [timeline](https://developers.google.com/open-source/gsoc/timeline), [contributor responsibilities](https://developers.google.com/open-source/gsoc/help/responsibilities), and [FLARE project ideas](https://github.com/mandiant/flare-gsoc/blob/2025/doc/project-ideas.md).
+0. **Read** the GSoC [timeline](https://developers.google.com/open-source/gsoc/timeline), [contributor responsibilities](https://developers.google.com/open-source/gsoc/help/responsibilities), and [FLARE project ideas](https://github.com/mandiant/flare-gsoc/blob/2026/doc/project-ideas.md).
   1. Before applying, **talk to your prospective mentors** and mention that you have an interest in their project by creating a new topic in [GitHub discussions](https://github.com/mandiant/flare-gsoc/discussions) and mentioning @mandiant/flare-gsoc. This way we can get to know each other and discuss project ideas.
-  2. **Prepare a patch** related to the existing FLARE project to practice interacting with us on GitHub. **This should take you between one and four hours**. We have “good first issues” [tagged here](https://github.com/search?q=topic%3Agsoc-2025+org%3Amandiant+label%3A%22good+first+issue%22+state%3Aopen&type=Issues); you can claim and close one of these or find something else that interests you. You don't need to send more than one PR to fulfill this requirement - we just want to work out any kinks in our collaboration styles. We value bug fixes or improvements that show your familiarity with the code. Please do NOT submit a PR just to check off a box, i.e., a meaningless or trivial fix.
+  2. **Prepare a patch** related to the existing FLARE project to practice interacting with us on GitHub. **This should take you between one and four hours**. We have "good first issue" [tagged here](https://github.com/search?q=topic%3Agsoc-2026+org%3Amandiant+label%3A%22good+first+issue%22+state%3Aopen&type=Issues); you can claim and close one of these or find something else that interests you. You don't need to send more than one PR to fulfill this requirement - we just want to work out any kinks in our collaboration styles. We value bug fixes or improvements that show your familiarity with the code.
+  * **IMPORTANT**
+    * Please do *NOT* comment on an issue asking if you can work on it - just do it!
+    * Please do *NOT* submit a PR just to check off a box, i.e., a meaningless or trivial fix.
+    * See the *AI Tooling Guidance* section below!
   3. **Write your application** using the below template. **This should take you between two and six hours**.
-      - If you choose, we can provide one review of your application submitted to us via a shared Google document **at least 10 days prior to the application deadline**.
-  4. **Submit your application** to the Google system before the deadline on April 8 (18:00 UTC). All applications must go through Google's application system; we can't accept any application unless it is submitted there.
+  4. **Submit your application** to the Google system before the deadline. All applications must go through Google's application system; we can't accept any application unless it is submitted there.
+
+
+# AI Tooling Guidance
+While we advocate for the use of AI tools to streamline and improve your development process, such as for test generation, it remains essential to demonstrate your proficiency in the project's language and a solid grasp of the underlying codebase.
+
+When using AI tools:
+* Conduct a thorough review of all AI-generated code to ensure you fully validate and understand the logic.
+* Be transparent about your usage by disclosing the specific tool(s) employed and providing the prompts you submitted.
+
+For additional information, refer to the [GSoC's Guidance for Contributors using AI tooling in GSoC 2026 doc](https://docs.google.com/document/d/1t9GcIBnNXPNO6klRQvU8pL8-uV6afzLo6JUAM299suA/edit?usp=sharing).
 
 
 # Application Template
