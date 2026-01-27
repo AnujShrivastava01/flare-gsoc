@@ -19,8 +19,60 @@ Briefly:
   - QUANTUMSTRAND
 - [GoReSym](https://github.com/mandiant/GoReSym) is a Go symbol parser that extracts program metadata (such as CPU architecture, OS, endianness, compiler version, etc), function metadata, filename and line number metadata, and embedded structures and types.
 
+## capa: Native Script Analysis Support
 
-## capa: enhance static analysis
+*size*: large, estimated 350 hours
+
+*difficulty*: hard
+
+*mentors*: [@mike-hunhoff](https://github.com/mike-hunhoff), [@Maijin](https://github.com/Maijin), [@larchchen](https://github.com/larchchen)
+
+Current static analysis tools often struggle with scripting languages, relying on fragile regular expressions that are easily evaded. As adversaries increasingly "Live off the Land" using scripts, the need for robust, structural analysis is critical.
+
+This project aims to extend the **capa** engine to natively support static analysis of scripting languages by integrating **Tree-sitter**. By moving beyond byte-sequence matching to Abstract Syntax Tree (AST) analysis, we can detect capabilities in interpreted languages with the same fidelity capa currently provides for PE, ELF, and .NET binaries.
+
+**Deliverables**
+
+* **Core Integration**: Integrate the `tree-sitter` parser library into capa's Python architecture.
+* **Backend Development**: Develop a new analysis backend that traverses the AST to extract features (function calls, variable usage, structure) rather than using regex.
+* **Language Support**: Implement initial support for \*Nix/Cloud languages (focusing on Bash and Python) or Windows (PowerShell).
+* **Rule Verification**: Create a set of capa rules to demonstrate and test the new capability against real-world samples.
+
+**Required Skills**
+
+* Strong proficiency in Python3.
+* Understanding of compilers, parsers, or Abstract Syntax Trees (AST).
+* Familiarity with `tree-sitter` is a major plus.
+* Knowledge of scripting languages (Bash, Python, or PowerShell).
+* Basic understanding of Git and malware analysis concepts.
+
+## capa: Automated Rule Generation Agent
+
+*size*: large, estimated 350 hours
+
+*difficulty*: medium to hard
+
+*mentors*: [@mike-hunhoff](https://github.com/mike-hunhoff), [@Maijin](https://github.com/Maijin)
+
+Mandiant’s [capa](https://github.com/mandiant/capa) is the industry standard for identifying capabilities in executable files. However, the volume of new malware variants and requested rules in our issue tracker often exceeds the capacity of human analysts. Keeping the ruleset up-to-date manually is challenging against the velocity of new threat techniques.
+
+This project aims to develop an autonomous **capa agent** that functions as a "virtual contributor." The agent will automate the heavy lifting of rule creation by parsing GitHub Issues or analyzing raw samples, generating valid YAML rules using Large Language Models (LLMs), and crucially verifying them against the official capa linter and test runner before submission. The system adheres to a Human-in-the-Loop (HITL) philosophy: the agent does the engineering and testing, but human maintainers retain control over the final merge via Pull Requests.
+
+**Deliverables**
+
+* **Agent Core & Triggers**: Develop the agent logic using Google ADK to handle "Reactive" triggers (parsing GitHub Issues for context/samples) and "Proactive" triggers (scanning daily feeds).
+* **Generation & Grounding**: Implement the LLM integration (e.g., Gemini) to write rules, using RAG or tool use (Google Search) to verify API definitions and shell commands.
+* **Validation Loop**: Build a robust self-correction loop where the agent runs the `capa` linter and test runner, parsing error logs to fix syntax errors automatically *before* a human sees the code.
+* **Automated PR Workflow**: Create the logic to package verified rules and submit them as formatted Pull Requests to `mandiant/capa-rules`, including test results in the PR description.
+
+**Required Skills**
+
+* Strong proficiency in Python.
+* Experience with LLMs, Agents, or Prompt Engineering.
+* Basic understanding of malware analysis and the capa rule format (YAML).
+* Familiarity with Git, GitHub Actions, or CI/CD pipelines.
+
+## capa: Enhance Static Analysis
 
 _size_: medium to large
 
@@ -32,7 +84,7 @@ This initiative focuses on advancing the static analysis capabilities of capa. K
 
 **Deliverables**:
 
-- Assess the current performance and functionality of capa
+* Assess the current performance and functionality of capa
 * Brainstorm and pinpoint specific areas for potential improvement
 * Develop, validate, and provide documentation for all implemented enhancements
 * Stretch Goal: Explore and build AI-driven analysis to bolster results
@@ -45,7 +97,7 @@ This initiative focuses on advancing the static analysis capabilities of capa. K
 * Practical experience using Git and GitHub
 
 
-## capa: enhance dynamic analysis
+## capa: Enhance Dynamic Analysis
 
 _size_: medium to large
 
@@ -70,7 +122,7 @@ This project's goal is to improve capa's dynamic analysis functionality (i.e. VM
 - Experience with Git and GitHub.
 
 
-## FLOSS: extract language specific strings (.NET, Swift, Zig, ...)
+## FLOSS: Extract Language Specific Strings (.NET, Swift, Zig, ...)
 
 _size_: large, estimated 350 hours
 
