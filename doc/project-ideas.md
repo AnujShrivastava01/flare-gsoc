@@ -149,6 +149,30 @@ We propose to extend FLOSS to use the techniques pioneered by QUANTUMSTRAND to h
 - Experience or interest in user interface and/or user experience design
 
 
-## GoReSym: project in scope
+## GoReSym: Recover Golang Structure Tags and Interface Methods in GoReSym
 
-_mentors_: [@stevemk14ebr](https://github.com/stevemk14ebr)
+**Mentors:** @stevemk14ebr, @jaeyoungkimG  
+**Difficulty:** Easy to Medium  
+**Project Repo:** [https://github.com/mandiant/GoReSym](https://github.com/mandiant/GoReSym)  
+
+### Description
+GoReSym is a Go symbol parser that extracts program metadata, function information, and embedded structures/types from Go binaries. It is widely used by reverse engineers to analyze stripped Go binaries and reconstruct type definitions.
+
+Currently, GoReSym recovers structure fields but fails to extract **structure tags** (e.g., `` `json:"name"` ``) and **interface method names**. These tags are critical for understanding how data is serialized (JSON, XML) and how the application interacts with databases or external APIs. The goal of this project is to implement the parsing logic required to recover these missing metadata fields and include them in GoReSym's JSON output.
+
+### Task Details
+The contributor will need to:
+1.  **Analyze Existing Parsers:** Study how GoReSym currently extracts `StructField` information by looking at the code adapted from the Go runtime (specifically `objfile` and type parsing logic).
+2.  **Implement Tag Extraction:** Add logic to read the tag string associated with struct fields. This involves understanding the internal memory layout of Go types.
+3.  **Implement Method Name Extraction:** Add logic to recover method names for Interface types.
+4.  **Update Output:** Modify the JSON serialization to include these new fields.
+5.  **Testing:** specific test cases involving structs with various tags and interfaces to ensure accurate recovery across different Go versions.
+
+### Recommended Skills
+*   **Go (Golang):** Intermediate knowledge.
+*   **Reverse Engineering:** Basic understanding of binary formats (PE, ELF, Mach-O) and memory layouts.
+*   **Go Internals:** Familiarity with how Go stores type metadata (`moduledata`, `pclntab`) is helpful but can be learned during the project.
+
+### Resources
+*   **Issue Discussion:** [GoReSym Issue #37](https://github.com/mandiant/GoReSym/issues/37) (contains references to similar implementations).
+*   **Reference Implementation:** [goretk/gore type parsing](https://github.com/goretk/gore/blob/3009b3909f08fa910e5a93d893bb66117f3628f9/type2.go#L149)
