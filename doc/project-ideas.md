@@ -289,4 +289,4 @@ The student will implement a new GUI module (e.g., `xrefer_new/gui/binaryninja/`
 * **Python:** Strong proficiency (required for XRefer core integration).
 * **Platform Specifics (Candidate must possess skills for their chosen path):**
     * **Binary Ninja Path:** Experience with **Qt (PyQt5/PySide)** and the `binaryninjaui` API.
-    * **Ghidra Path:** Experience with **Java/Swing** (Ghidra's GUI toolkit), the Ghidra Program API, and bridging Python/Java environments (e.g., Ghidrathon) is highly preferred.
+    * **Ghidra Path:** Experience with **Java/Swing** (Ghidra's GUI toolkit) and the PyGhidra API is highly preferred.
