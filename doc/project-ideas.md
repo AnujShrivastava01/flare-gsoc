@@ -18,6 +18,9 @@ Briefly:
   - extract language specific strings (.NET, Swift, Zig, ...)
   - QUANTUMSTRAND
 - [GoReSym](https://github.com/mandiant/GoReSym) is a Go symbol parser that extracts program metadata (such as CPU architecture, OS, endianness, compiler version, etc), function metadata, filename and line number metadata, and embedded structures and types.
+- [XRefer](https://github.com/mandiant/xrefer) is an IDA plugin offering a custom navigation interface to examine execution paths, highlight downstream behaviors, cluster related functions, and generate Gemini-based insights into the malware's anatomy.
+  - [Backend Expansion (Radare2 or Vivisect))](https://github.com/mandiant/flare-gsoc/blob/2026/doc/project-ideas.md#xrefer-backend-expansion-radare2-or-vivisect)
+  - [Native Frontend Development (Binary Ninja or Ghidra)](https://github.com/mandiant/flare-gsoc/blob/2026/doc/project-ideas.md#xrefer-native-frontend-binary-ninja-or-ghidra)
 
 ## capa: Native Script Analysis Support
 
@@ -228,3 +231,62 @@ The contributor will need to:
 ### Resources
 *   **Issue Discussion:** [GoReSym Issue #37](https://github.com/mandiant/GoReSym/issues/37) (contains references to similar implementations).
 *   **Reference Implementation:** [goretk/gore type parsing](https://github.com/goretk/gore/blob/3009b3909f08fa910e5a93d893bb66117f3628f9/type2.go#L149)
+
+## XRefer: Backend Expansion (Radare2 or Vivisect)
+
+_size_: large, estimated 360 hours
+
+_difficulty_: medium
+
+_mentors_: @m-umairx, @binjo
+
+### Description
+**XRefer** is a binary analysis tool that correlates cross-references, API traces, and LLM-generated insights to cluster functions by behavior. Currently, XRefer utilizes a robust backend abstraction layer (`xrefer_new/backend/base.py`) with implementations for IDA Pro, Ghidra, and Binary Ninja.
+
+This project aims to democratize access to XRefer by implementing a backend for a fully open-source/free disassembly framework: **Radare2** (via r2pipe) or **Vivisect**. While Ghidra is free, it is heavy and complex to set up in automated environments. By supporting lightweight frameworks like Vivisect or Radare2, we can create a truly **standalone CLI release** of XRefer. This would allow users to install and run XRefer (e.g. via `pip`) without requiring complex setups or commercial licenses, significantly lowering the barrier to entry for students and researchers.
+
+The core task involves mapping the target framework's API to XRefer's standardized `BackEnd` interface. This includes implementing memory reading, function enumeration, disassembly lifting (to XRefer's `Instruction` format), and cross-reference analysis.
+
+### Deliverables
+* **Functional Backend Module:** A fully implemented backend package (e.g., `xrefer_new/backend/vivisect/`) that adheres to the `BackEnd` abstract base class.
+* **Core Abstraction Refinement:** As the backend abstraction layer is relatively new, the student is expected to identify and implement necessary fixes, tweaks, or extensions to the base interface (`xrefer_new/backend/base.py`) to ensure the new backend functions correctly and the abstraction remains robust.
+* **CLI Integration:** A working standalone CLI version of XRefer that uses this new backend by default when no commercial tool is detected.
+* **Unit Tests:** A comprehensive test suite verifying that the new backend returns data (functions, strings, xrefs) consistent with the existing IDA/Ghidra backends.
+* **Documentation:** Setup guides for the standalone CLI version and dependency management.
+
+### Required Skills
+* **Python:** Advanced proficiency.
+* **Reverse Engineering:** Understanding of binary file formats (PE/ELF), memory sections, and assembly (x86/x64) and experience with IDA Pro.
+* **Target Framework API:** Familiarity with **Radare2 (r2pipe)** or **Vivisect** internals is highly preferred.
+
+## XRefer: Native Frontend Development (Binary Ninja or Ghidra)
+
+_size_: large, estimated 360 hours
+
+_difficulty_: medium
+
+_mentors_: @m-umairx, @binjo
+
+### Description
+XRefer's architecture separates the analysis logic (`core/analyzer.py`) from the underlying disassembler via a backend abstraction layer. However, the current Graphical User Interface (GUI) is implemented exclusively for IDA Pro.
+
+This project aims to build a **native frontend module** for another major platform. The candidate may choose to target either **Binary Ninja** OR **Ghidra**.
+
+Rather than creating a generic GUI abstraction, the goal is to write a dedicated GUI module tailored specifically to the chosen platform's capabilities. This ensures the plugin feels "native" to the environment, utilizing the specific Docking API and UI toolkit of the host (Qt for Binary Ninja, Swing for Ghidra).
+
+The student will implement a new GUI module (e.g., `xrefer_new/gui/binaryninja/` or `xrefer_new/gui/ghidra/`) that consumes the platform-agnostic analysis data produced by the XRefer core and renders it using the host's native UI widgets. This will replicate the rich experience of the IDA plugin—including cluster visualization, colored tables, and interactive navigation—directly within the chosen client.
+
+### Deliverables
+* **Native Frontend Module:** A platform-specific Python module implementing the XRefer UI, utilizing the native docking and widget APIs of the chosen tool.
+* **Visual Parity:** Replication of key XRefer visual features using the host's UI primitives:
+    * **Cluster Graphs:** Rendering ASCII-art or graph-based visualizations of function clusters.
+    * **Context Tables:** Interactive lists of cross-references, strings, and capabilities.
+    * **Status Ribbons:** Information bars displaying analysis state.
+* **Interactive Navigation:** Implementation of double-click navigation and synchronization between the XRefer view and the host disassembly listing.
+* **Integration:** Seamless loading of the GUI module when XRefer is started within the client.
+
+### Required Skills
+* **Python:** Strong proficiency (required for XRefer core integration).
+* **Platform Specifics (Candidate must possess skills for their chosen path):**
+    * **Binary Ninja Path:** Experience with **Qt (PyQt5/PySide)** and the `binaryninjaui` API.
+    * **Ghidra Path:** Experience with **Java/Swing** (Ghidra's GUI toolkit), the Ghidra Program API, and bridging Python/Java environments (e.g., Ghidrathon) is highly preferred.
