@@ -20,7 +20,7 @@ Briefly:
 - [GoReSym](https://github.com/mandiant/GoReSym) is a Go symbol parser that extracts program metadata (such as CPU architecture, OS, endianness, compiler version, etc), function metadata, filename and line number metadata, and embedded structures and types.
 - [XRefer](https://github.com/mandiant/xrefer) is an IDA plugin offering a custom navigation interface to examine execution paths, highlight downstream behaviors, cluster related functions, and generate Gemini-based insights into the malware's anatomy.
   - [Backend Expansion (Radare2 or Vivisect))](https://github.com/mandiant/flare-gsoc/blob/2026/doc/project-ideas.md#xrefer-backend-expansion-radare2-or-vivisect)
-  - [Native Frontend Development (Binary Ninja or Ghidra)](https://github.com/mandiant/flare-gsoc/blob/2026/doc/project-ideas.md#xrefer-native-frontend-binary-ninja-or-ghidra)
+  - [Native Frontend Development (Binary Ninja or Ghidra)](https://github.com/mandiant/flare-gsoc/blob/2026/doc/project-ideas.md#xrefer-native-frontend-development-binary-ninja-or-ghidra)
 
 ## capa: Native Script Analysis Support
 
