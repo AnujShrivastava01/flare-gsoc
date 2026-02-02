@@ -256,7 +256,7 @@ The core task involves mapping the target framework's API to XRefer's standardiz
 
 ### Required Skills
 * **Python:** Advanced proficiency.
-* **Reverse Engineering:** Understanding of binary file formats (PE/ELF), memory sections, and assembly (x86/x64) and experience with IDA Pro.
+* **Reverse Engineering:** Understanding of binary file formats (PE/ELF), memory sections, and assembly (x86/x64).
 * **Target Framework API:** Familiarity with **Radare2 (r2pipe)** or **Vivisect** internals is highly preferred.
 
 ## XRefer: Native Frontend Development (Binary Ninja or Ghidra)
@@ -290,3 +290,4 @@ The student will implement a new GUI module (e.g., `xrefer_new/gui/binaryninja/`
 * **Platform Specifics (Candidate must possess skills for their chosen path):**
     * **Binary Ninja Path:** Experience with **Qt (PyQt5/PySide)** and the `binaryninjaui` API.
     * **Ghidra Path:** Experience with **Java/Swing** (Ghidra's GUI toolkit) and the PyGhidra API is highly preferred.
+* Experience with and access to IDA Pro are preferred, as the candidate should ideally be able to explore the IDA plugin frontend independently to replicate it on the target platform.
