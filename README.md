@@ -1,4 +1,4 @@
-# FLARE @ Google Summer of Code 2026
+# FLARE @ Google Summer of Code 2026 !!
 This repository contains information about Mandiant FLARE's participation in the Google Summer of Code 2026.
 
 See our [GSoC Organization and Projects page](https://summerofcode.withgoogle.com/programs/2025/organizations/flare) for details on what we accomplished last year.
